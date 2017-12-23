@@ -204,6 +204,10 @@
 -(void)editButtonAction:(UIBarButtonItem *)sender{
     EditViewController *editVC = [EditViewController new];
     editVC.editImage = self.nowImage;
+    editVC.backImage = ^(UIImage *image) {
+        [self saveImage:image];
+        self.nowImageView.image = image;
+    };
     [self.navigationController pushViewController:editVC animated:YES];
 }
 -(void)selectButtonAction:(UIButton *)sender{
@@ -225,15 +229,15 @@
 }
 -(void)pickBarButtonItemAction:(UIBarButtonItem *)sender{
     UIViewController *vc = [self.navigationController.viewControllers objectAtIndex:self.navigationController.viewControllers.count-3];
-    if ([self.albumDelegate respondsToSelector:@selector(selectedImageWithAssetArray:)]) {
-        NSMutableArray *result = [NSMutableArray array];
-        [self.selectedArray enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
-            if ([obj boolValue]) {
-                [result addObject:[self.dataSource objectAtIndex:idx]];
-            }
-        }];
-        [self.delegate performSelector:@selector(selectedImageWithAssetArray:) withObject:result];
-    }
+//    if ([self.albumDelegate respondsToSelector:@selector(selectedImageWithAssetArray:)]) {
+//        NSMutableArray *result = [NSMutableArray array];
+//        [self.selectedArray enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+//            if ([obj boolValue]) {
+//                [result addObject:[self.dataSource objectAtIndex:idx]];
+//            }
+//        }];
+//        [self.delegate performSelector:@selector(selectedImageWithAssetArray:) withObject:result];
+//    }
     [self.navigationController popToViewController:vc animated:YES];
 }
 -(void)backButtonAction:(UIBarButtonItem *)sender{
@@ -346,6 +350,25 @@
         self.nowImageView.image = result;
     }];
     [collectionView reloadData];
+}
+
+- (void)saveImage:(UIImage *)image{
+    NSError *error;
+    __block NSString *localIdentifier;
+    [[PHPhotoLibrary sharedPhotoLibrary] performChangesAndWait:^{
+//        PHAsset *asset = self.dataSource[self.page];
+        // 插件一个新的相册请求
+        PHAssetChangeRequest *request = [PHAssetChangeRequest creationRequestForAssetFromImage:image];
+        request.creationDate = [NSDate date];
+        localIdentifier = request.placeholderForCreatedAsset.localIdentifier;
+        // 从请求中获取PHAsset
+    } error:&error];
+    if (error != nil) {
+        NSLog(@"图片存储发生了错误 error = %@",error);
+        return;
+    }
+    PHAsset *newAsset = [PHAsset fetchAssetsWithLocalIdentifiers:@[localIdentifier] options:nil].firstObject;
+    self.dataSource[self.page] = newAsset;
 }
 
 @end

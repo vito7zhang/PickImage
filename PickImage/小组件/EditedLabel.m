@@ -54,16 +54,13 @@
 -(void)setText:(NSString *)text{
     [super setText:text];
     CGRect rect = [text boundingRectWithSize:CGSizeMake(CGFLOAT_MAX, CGFLOAT_MAX) options:NSStringDrawingUsesLineFragmentOrigin | NSStringDrawingUsesFontLeading attributes:@{NSFontAttributeName : self.font} context:nil];
-    self.frame = rect;
-    self.center = CGPointMake(Screen_Width/2, Screen_Height/2);
+    self.frame = CGRectMake((self.fixationRect.size.width-rect.size.width)/2, (self.fixationRect.size.height-rect.size.height)/2, rect.size.width, rect.size.height);
 }
 -(void)setFont:(UIFont *)font{
     [super setFont:font];
     CGRect rect = [self.text boundingRectWithSize:CGSizeMake(CGFLOAT_MAX, CGFLOAT_MAX) options:NSStringDrawingUsesLineFragmentOrigin | NSStringDrawingUsesFontLeading attributes:@{NSFontAttributeName : font} context:nil];
-    self.frame = rect;
-    self.center = CGPointMake(Screen_Width/2, Screen_Height/2);
+    self.frame = CGRectMake((self.fixationRect.size.width-rect.size.width)/2, (self.fixationRect.size.height-rect.size.height)/2, rect.size.width, rect.size.height);
 }
-
 //显示边框
 -(void)showBorder{
     self.layer.borderWidth = 1.0f;
@@ -118,43 +115,39 @@
 -(void)panAction:(UIPanGestureRecognizer *)pan{
     [self showBorder];
     CGPoint point = [pan translationInView:pan.view];
-    CGFloat tx = point.x;
-    CGFloat ty = point.y;
-    // 检测越界
-    CGFloat transformx = pan.view.transform.tx + self.centerX + tx;
-    CGFloat transformy = pan.view.transform.ty + self.centerY + ty;
+    
+    // 越界检测
+    // 这次移动到的x坐标点
+    CGFloat transformx = pan.view.transform.tx + self.centerX + point.x;
+    CGFloat transformy = pan.view.transform.ty + self.centerY + point.y;
     if (pan.state == UIGestureRecognizerStateEnded) {
-        if (transformx > (_fixationRect.origin.x +_fixationRect.size.width)) {
-            //        tx = _fixationRect.size.width + _fixationRect.origin.x - pan.view.transform.tx;
-            tx = 0;
-            pan.view.transform = CGAffineTransformTranslate(pan.view.transform, _fixationRect.origin.x +_fixationRect.size.width-pan.view.transform.tx-self.centerX, 0);
-        }else if(transformx < _fixationRect.origin.x){
-            //        tx = pan.view.transform.tx - _fixationRect.origin.x;
-            tx = 0;
-            pan.view.transform = CGAffineTransformTranslate(pan.view.transform, _fixationRect.origin.x -pan.view.transform.tx-self.centerX, 0);
+        if (transformx > (_fixationRect.size.width)) {
+            pan.view.transform = CGAffineTransformTranslate(pan.view.transform, _fixationRect.size.width-pan.view.transform.tx-self.centerX, 0);
+        }else if(transformx < 0){
+            pan.view.transform = CGAffineTransformTranslate(pan.view.transform, -pan.view.transform.tx-self.centerX, 0);
         }else{
-            pan.view.transform = CGAffineTransformTranslate(pan.view.transform, tx, 0);
+            pan.view.transform = CGAffineTransformTranslate(pan.view.transform, point.x, 0);
         }
-        if (transformy > (_fixationRect.origin.y + _fixationRect.size.height)) {
-            //        ty = _fixationRect.size.height + _fixationRect.origin.y - pan.view.transform.ty;
-            ty = 0;
-            pan.view.transform = CGAffineTransformTranslate(pan.view.transform, 0, _fixationRect.origin.y +_fixationRect.size.height-pan.view.transform.ty-self.centerY);
-        }else if(transformy < _fixationRect.origin.y){
-            //        ty = pan.view.transform.ty - _fixationRect.origin.y;
-            ty = 0;
-            pan.view.transform = CGAffineTransformTranslate(pan.view.transform, 0, _fixationRect.origin.y -pan.view.transform.ty-self.centerY);
+        if (transformy > (_fixationRect.size.height)) {
+            pan.view.transform = CGAffineTransformTranslate(pan.view.transform, 0,  +_fixationRect.size.height-pan.view.transform.ty-self.centerY);
+        }else if(transformy < 0){
+            pan.view.transform = CGAffineTransformTranslate(pan.view.transform, 0, -pan.view.transform.ty-self.centerY);
         }else{
-            pan.view.transform = CGAffineTransformTranslate(pan.view.transform, 0, ty);
+            pan.view.transform = CGAffineTransformTranslate(pan.view.transform, 0, point.y);
         }
     }else{
-        pan.view.transform = CGAffineTransformTranslate(pan.view.transform, tx, ty);
+        pan.view.transform = CGAffineTransformTranslate(pan.view.transform, point.x, point.y);
     }
     //每次移动完，将移动量置为0，否则下次移动会加上这次移动量
     [pan setTranslation:CGPointMake(0, 0) inView:pan.view];
 }
 
 -(BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldRecognizeSimultaneouslyWithGestureRecognizer:(UIGestureRecognizer *)otherGestureRecognizer{
-    return YES;
+    if (gestureRecognizer.view == otherGestureRecognizer.view) {
+        return YES;
+    }
+    return NO;
 }
+
 
 @end

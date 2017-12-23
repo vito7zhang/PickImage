@@ -17,10 +17,7 @@
 #define kTopHeight (kStatusBarHeight + kNavBarHeight)
 #define ScrollViewHeight Screen_Height-kTopHeight
 
-@interface EditTextViewController ()<UITextViewDelegate>{
-    CGFloat fontsize;
-    NSString *colorName;
-}
+@interface EditTextViewController ()<UITextViewDelegate>
 @property (nonatomic,strong)UIButton *cancelButton;
 @property (nonatomic,strong)UIButton *finishButton;
 @property (nonatomic,strong)UITextView *mainTextView;
@@ -73,6 +70,7 @@
     if (_mainTextView == nil) {
         _mainTextView = [[UITextView alloc]initWithFrame:CGRectMake(0, 70, Screen_Width, Screen_Height-44-70)];
         _mainTextView.backgroundColor = [UIColor clearColor];
+        _mainTextView.textColor = [UIColor redColor];
         _mainTextView.font = [UIFont systemFontOfSize:24.0];
         _mainTextView.tintColor = [UIColor blackColor];
     }
@@ -121,7 +119,7 @@
 
 -(void)finishButtonAction:(UIButton *)sender{
     NSString *text = self.mainTextView.text;
-    UIColor *color = self.mainTextView.textColor?self.mainTextView.textColor:[UIColor blackColor];
+    UIColor *color = self.mainTextView.textColor?self.mainTextView.textColor:[UIColor redColor];
     self.editInfo(text, color);
     [self.view removeFromSuperview];
     [self removeFromParentViewController];

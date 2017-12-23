@@ -21,7 +21,7 @@
 @property (nonatomic,strong)UICollectionView *photoCollectionView;
 @property (nonatomic,strong)UIAlertController *alertController;
 @property (nonatomic,strong)UICollectionViewFlowLayout *layout;
-
+@property (nonatomic,strong)NSMutableArray *resultArray;
 // 计数视图
 @property (nonatomic,strong)CountLabel *countLabel;
 
@@ -31,21 +31,16 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    if (@available(iOS 11.0, *)){
-        self.photoCollectionView.contentInsetAdjustmentBehavior = UIScrollViewContentInsetAdjustmentAutomatic;
-    }
     
     [self setTitleView];
-//    [self authorization];
     [self cachingImage];
-    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"确认" style:UIBarButtonItemStyleDone target:self action:@selector(confirmBarButtonItemAction:)];
-    [self.view addSubview:self.photoCollectionView];
-
     // 初始化选择数组
-    self.selectedArray = [NSMutableArray arrayWithCapacity:self.result.count];
-    [self.result enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+    self.selectedArray = [NSMutableArray arrayWithCapacity:self.resultArray.count];
+    [self.resultArray enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
         [self.selectedArray addObject:@0];
     }];
+    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"确认" style:UIBarButtonItemStyleDone target:self action:@selector(confirmBarButtonItemAction:)];
+    [self.view addSubview:self.photoCollectionView];
 }
 
 -(void)setTitleView{
@@ -70,8 +65,8 @@
     if (_result == nil) {
         PHFetchOptions*options = [[PHFetchOptions alloc]init];
         options.sortDescriptors=@[[NSSortDescriptor sortDescriptorWithKey:@"creationDate"ascending:NO]];
-        self.result = [PHAsset fetchAssetsWithMediaType:PHAssetMediaTypeImage options:options];
-        
+        _result = [PHAsset fetchAssetsWithMediaType:PHAssetMediaTypeImage options:options];
+        self.resultArray = [NSMutableArray arrayWithArray:[_result objectsAtIndexes:[NSIndexSet indexSetWithIndexesInRange:NSMakeRange(0, _result.count)]]];
     }
     return _result;
 }
@@ -95,6 +90,9 @@
         _photoCollectionView.dataSource = self;
         UINib *cellNib=[UINib nibWithNibName:@"PhotoCollectionViewCell" bundle:nil];
         [_photoCollectionView registerNib:cellNib forCellWithReuseIdentifier:@"PhotoCollectionViewCell"];
+        if (@available(iOS 11.0, *)){
+            _photoCollectionView.contentInsetAdjustmentBehavior = UIScrollViewContentInsetAdjustmentAutomatic;
+        }
     }
     return _photoCollectionView;
 }
@@ -129,13 +127,13 @@
 }
 //每一组有多少个cell
 -(NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section{
-    return self.result.count;
+    return self.resultArray.count;
 }
 //每一个cell是什么
 -(UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath{
     PhotoCollectionViewCell *cell = (PhotoCollectionViewCell *)[collectionView dequeueReusableCellWithReuseIdentifier:@"PhotoCollectionViewCell" forIndexPath:indexPath];
     
-    PHAsset *set = [self.result objectAtIndex:indexPath.row];
+    PHAsset *set = [self.resultArray objectAtIndex:indexPath.row];
     PHImageManager *imageManager = [PHImageManager defaultManager];
     PHImageRequestOptions *options = [[PHImageRequestOptions alloc] init];
     options.resizeMode = PHImageRequestOptionsResizeModeExact;
@@ -144,8 +142,9 @@
     }];
     
     [cell.selectedButton addTarget:self action:@selector(selectedButtonAction:) forControlEvents:UIControlEventTouchUpInside];
+    cell.selectedButton.selected = [self.selectedArray[indexPath.row] boolValue];
     cell.selectedButton.tag = 1000+indexPath.row;
-    cell.backgroundColor=[UIColor groupTableViewBackgroundColor];
+    cell.backgroundColor = [UIColor groupTableViewBackgroundColor];
     return cell;
 }
 //cell的点击事件
@@ -155,20 +154,20 @@
     
     PreviewViewController *previewVC = [PreviewViewController new];
     previewVC.delegate = self;
-    previewVC.albumDelegate = self.delegate;
+//    previewVC.albumDelegate = self.delegate;
     previewVC.selectedArray = self.selectedArray;
+
     previewVC.page = indexPath.row;
     previewVC.maxCount = self.maxCount;
-    previewVC.dataSource = [self.result objectsAtIndexes:[NSIndexSet indexSetWithIndexesInRange:NSMakeRange(0, self.result.count)]];
+    previewVC.dataSource = self.resultArray;
+
     [self.navigationController pushViewController:previewVC animated:YES];
 }
 
 -(void)selectedImage{
     __block NSUInteger count = 0;
+    [self.photoCollectionView reloadData];
     [self.selectedArray enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
-        PhotoCollectionViewCell *cell = (PhotoCollectionViewCell *)[_photoCollectionView cellForItemAtIndexPath:[NSIndexPath indexPathForRow:idx inSection:0]];
-        NSLog(@"obj boolvalue = %d",[obj boolValue]);
-        cell.selectedButton.selected = [obj boolValue];
         if ([obj boolValue]) {
             count += 1;
         }
@@ -187,15 +186,15 @@
     }
 }
 -(void)confirmBarButtonItemAction:(UIBarButtonItem *)sender{
-    if ([self.delegate respondsToSelector:@selector(selectedImageWithAssetArray:)]) {
-        NSMutableArray *result = [NSMutableArray array];
-        [self.selectedArray enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
-            if ([obj boolValue]) {
-                [result addObject:[self.result objectAtIndex:idx]];
-            }
-        }];
-        [self.delegate selectedImageWithAssetArray:result];
-    }
+//    if ([self.delegate respondsToSelector:@selector(selectedImageWithAssetArray:)]) {
+//        NSMutableArray *result = [NSMutableArray array];
+//        [self.selectedArray enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+//            if ([obj boolValue]) {
+//                [result addObject:[self.result objectAtIndex:idx]];
+//            }
+//        }];
+//        [self.delegate selectedImageWithAssetArray:result];
+//    }
     [self.navigationController popViewControllerAnimated:YES];
 }
 
@@ -220,6 +219,11 @@
         // 已授权
         [self.photoCollectionView reloadData];
     }
+}
+
+-(void)viewDidAppear:(BOOL)animated{
+    self.navigationController.navigationBarHidden = NO;
+    self.navigationController.toolbarHidden = YES;
 }
 
 @end

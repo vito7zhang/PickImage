@@ -17,7 +17,9 @@
     [super awakeFromNib];
     [self.selectedButton setImage:[UIImage imageNamed:@"unselected"] forState:UIControlStateNormal];
     [self.selectedButton setImage:[UIImage imageNamed:@"selected"] forState:UIControlStateSelected];
+    // 监听这个属性
     [self.selectedButton addObserver:self forKeyPath:@"selected" options:NSKeyValueObservingOptionNew context:nil];
+    self.imageView.contentMode = UIViewContentModeScaleAspectFill;
     _maskLayer = [CALayer new];
     _maskLayer.bounds = self.frame;
     _maskLayer.hidden = YES;
@@ -27,7 +29,7 @@
 /*2.实现回调方法*/
 -(void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary<NSString *,id> *)change context:(void *)context{
     if ([keyPath isEqualToString:@"selected"]) {
-        NSLog(@"Name is changed! new = %@",[change valueForKey:NSKeyValueChangeNewKey]);
+//        NSLog(@"Name is changed! new = %@",[change valueForKey:NSKeyValueChangeNewKey]);
         BOOL selected = [[change valueForKey:NSKeyValueChangeNewKey] boolValue];
         _maskLayer.hidden = !selected;
     }else{

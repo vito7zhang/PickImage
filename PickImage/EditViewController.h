@@ -10,5 +10,5 @@
 
 @interface EditViewController : UIViewController
 @property (nonatomic,strong)UIImage *editImage;
-@property (nonatomic,weak)void (^backImage)(UIImage *);
+@property (nonatomic,copy)void (^backImage)(UIImage *);
 @end

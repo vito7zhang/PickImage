@@ -34,7 +34,7 @@
                     if (status == PHAuthorizationStatusAuthorized) {
                         AlbumViewController *albumVC = [AlbumViewController new];
                         albumVC.maxCount = 9;
-                        albumVC.delegate = self;
+//                        albumVC.delegate = self;
                         [_vc.navigationController pushViewController:albumVC animated:YES];
                     }else if ([PHPhotoLibrary authorizationStatus] != PHAuthorizationStatusAuthorized){
                         [self showAlertToOpenauthorizationStatus];
@@ -45,7 +45,7 @@
             }else if ([PHPhotoLibrary authorizationStatus] == PHAuthorizationStatusAuthorized){
                 AlbumViewController *albumVC = [AlbumViewController new];
                 albumVC.maxCount = 9;
-                albumVC.delegate = self;
+//                albumVC.delegate = self;
                 [_vc.navigationController pushViewController:albumVC animated:YES];
             }
         }];

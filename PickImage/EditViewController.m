@@ -48,7 +48,7 @@
 @property (nonatomic,strong)NSMutableArray *lines;
 @property (nonatomic,strong)UIColor *strokeColor;
 
-@property (nonatomic,strong)NSMutableArray *textViews;
+@property (nonatomic,strong)NSMutableArray *texts;
 @end
 
 @implementation EditViewController
@@ -56,8 +56,9 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     scale = 1.0;
-    self.strokeColor = [UIColor blackColor];
+    self.strokeColor = [UIColor redColor];
     self.lines = [NSMutableArray array];
+    self.texts = [NSMutableArray array];
     
     [self.view addSubview:self.containView];
     [self.view addSubview:self.cancelButton];
@@ -110,6 +111,210 @@
     }
     return _backgroundImageView;
 }
+
+
+#pragma mark 按钮绑定事件
+-(void)cancelButtonAction:(UIButton *)sender{
+    [self.navigationController popViewControllerAnimated:YES];
+}
+-(void)finishButtonAction:(UIButton *)sender{
+    self.backImage(self.editedImage);
+    [self.navigationController popViewControllerAnimated:YES];
+
+//    NSData *data = UIImagePNGRepresentation(self.editedImage);
+//    [data writeToFile:@"/Users/vito7zhang/Desktop/1.png" atomically:YES];
+}
+-(void)penButtonAction:(UIButton *)sender{
+    sender.selected = !sender.selected;
+    [UIView animateWithDuration:0.25 animations:^{
+        if (sender.selected) {
+            self.colorView.alpha = 1.0;
+            self.penRepealButton.alpha = 1.0;
+        }else{
+            self.colorView.alpha = 0.0;
+            self.penRepealButton.alpha = 0.0;
+        }
+    }];
+}
+-(void)penRepealButtonAction:(UIButton *)sender{
+    if (self.lines.count > 0) {
+        CALayer *layer = self.lines.lastObject;
+        [layer removeFromSuperlayer];
+        [self.lines removeLastObject];
+    }
+}
+-(void)textButtonAction:(UIButton *)sender{
+    self.colorView.alpha = 0.0;
+    self.penRepealButton.alpha = 0.0;
+    EditTextViewController *editTextVC = [EditTextViewController new];
+    editTextVC.view.backgroundColor = [UIColor clearColor];
+    editTextVC.view.backgroundColor = [UIColor colorWithRed:0 green:0 blue:0 alpha:0.7];
+    editTextVC.editInfo = ^(NSString *text, UIColor *color) {
+        EditedLabel *editedLabel = [EditedLabel new];
+        editedLabel.fixationRect = self.backgroundImageView.frame;
+        editedLabel.text = text;
+        editedLabel.font = [UIFont systemFontOfSize:24.0];
+        editedLabel.textColor = color;
+        [self.texts addObject:editedLabel];
+        [self.backgroundImageView addSubview:editedLabel];
+    };
+    [self.view addSubview:editTextVC.view];
+    [self addChildViewController:editTextVC];
+}
+
+#pragma mark 手势事件
+-(void)tapAction:(UITapGestureRecognizer *)tap{
+    BOOL toolbarHidden = !self.toolBar.alpha;
+    [UIView animateWithDuration:0.25 animations:^{
+        if (toolbarHidden) {
+            [self showAnything];
+        }else{
+            [self hiddenAnythingWithoutBackimage];
+        }
+    }];
+}
+-(void)oneTouchPanAction:(UIPanGestureRecognizer *)pan{
+    CGPoint point = [pan translationInView:pan.view];
+    pan.view.transform = CGAffineTransformTranslate(pan.view.transform, point.x, point.y);
+    //每次移动完，将移动量置为0，否则下次移动会加上这次移动量
+    [pan setTranslation:CGPointMake(0, 0) inView:pan.view];
+    // 检测移动上下左右越界
+    if (pan.state == UIGestureRecognizerStateEnded) {
+        if (-pan.view.transform.tx>(pan.view.width-Screen_Width)/2) {
+            CGAffineTransform transform = pan.view.transform;
+            transform.tx = -(pan.view.width-Screen_Width)/2;
+            pan.view.transform = transform;
+        }else if(pan.view.transform.tx > (pan.view.width-Screen_Width)/2) {
+            CGAffineTransform transform = pan.view.transform;
+            transform.tx = (pan.view.width-Screen_Width)/2;
+            pan.view.transform = transform;
+        }
+        if (-pan.view.transform.ty>(pan.view.height-Screen_Height)/2) {
+            CGAffineTransform transform = pan.view.transform;
+            transform.ty = -(pan.view.height-Screen_Height)/2;
+            pan.view.transform = transform;
+        }else if(pan.view.transform.ty > (pan.view.height-Screen_Height)/2) {
+            CGAffineTransform transform = pan.view.transform;
+            transform.ty = (pan.view.height-Screen_Height)/2;
+            pan.view.transform = transform;
+        }
+    }
+}
+-(void)doubleTouchPanAction:(UIPanGestureRecognizer *)pan{
+    CGPoint point = [pan translationInView:pan.view];
+    pan.view.transform = CGAffineTransformTranslate(pan.view.transform, point.x, point.y);
+    //每次移动完，将移动量置为0，否则下次移动会加上这次移动量
+    [pan setTranslation:CGPointMake(0, 0) inView:pan.view];
+    // 检测移动上下左右越界
+    if (pan.state == UIGestureRecognizerStateEnded) {
+        if (-pan.view.transform.tx>(pan.view.width-Screen_Width)/2) {
+            CGAffineTransform transform = pan.view.transform;
+            transform.tx = -(pan.view.width-Screen_Width)/2;
+            pan.view.transform = transform;
+        }else if(pan.view.transform.tx > (pan.view.width-Screen_Width)/2) {
+            CGAffineTransform transform = pan.view.transform;
+            transform.tx = (pan.view.width-Screen_Width)/2;
+            pan.view.transform = transform;
+        }
+        if (-pan.view.transform.ty>(pan.view.height-Screen_Height)/2) {
+            CGAffineTransform transform = pan.view.transform;
+            transform.ty = -(pan.view.height-Screen_Height)/2;
+            pan.view.transform = transform;
+        }else if(pan.view.transform.ty > (pan.view.height-Screen_Height)/2) {
+            CGAffineTransform transform = pan.view.transform;
+            transform.ty = (pan.view.height-Screen_Height)/2;
+            pan.view.transform = transform;
+        }
+    }
+}
+// 捏合手势
+-(void)pinchAction:(UIPinchGestureRecognizer *)pinch{
+    if (pinch.state==UIGestureRecognizerStateBegan || pinch.state==UIGestureRecognizerStateChanged){
+        UIView *view=[pinch view];
+        //扩大、缩小倍数
+        view.transform=CGAffineTransformScale(view.transform, pinch.scale, pinch.scale);
+        scale *= pinch.scale;
+        pinch.scale=1;
+    }
+    // 结束的时候如果缩小倍数如果小于1，则回到原图的样子
+    if (pinch.state == UIGestureRecognizerStateEnded) {
+        if (scale < 1.0) {
+            scale = 1;
+            pinch.view.transform = CGAffineTransformIdentity;
+        }
+        [self hiddenAnythingWithoutBackimage];
+        NSLog(@"pinch.view.width = %f",pinch.view.width);
+    }
+}
+//改变颜色通知
+-(void)changeColor:(NSNotification *)noti{
+    if (self.childViewControllers.count == 0) {
+        _strokeColor = noti.object[@"color"];
+    }
+}
+// 隐藏导航栏
+-(void)viewWillAppear:(BOOL)animated{
+    [super viewWillAppear:animated];
+    self.navigationController.toolbarHidden = YES;
+    self.navigationController.navigationBarHidden = YES;
+}
+// 取消隐藏导航栏
+-(void)viewWillDisappear:(BOOL)animated{
+    [super viewWillDisappear:animated];
+    self.navigationController.toolbarHidden = NO;
+    self.navigationController.navigationBarHidden = NO;
+}
+// 将所有视图显示
+-(void)showAnything{
+    self.toolBar.alpha = 1.0;
+    self.cancelButton.alpha = 1.0;
+    self.finishButton.alpha = 1.0;
+    if (self.penButton.selected) {
+        self.colorView.alpha = 1.0;
+        self.penRepealButton.alpha = 1.0;
+    }
+}
+// 将所有视图隐藏
+-(void)hiddenAnythingWithoutBackimage{
+    self.toolBar.alpha = 0.0;
+    self.cancelButton.alpha = 0.0;
+    self.finishButton.alpha = 0.0;
+    self.colorView.alpha = 0.0;
+    self.penRepealButton.alpha = 0.0;
+}
+// 移动绘制线条
+-(void)touchesBegan:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event{
+    onePan.enabled = !self.penButton.selected;
+    if (self.penButton.selected) {
+        UITouch *touch = [touches anyObject];
+        CGPoint point = [touch locationInView:self.backgroundImageView];
+        _path = [UIBezierPath bezierPath];
+        _path.lineWidth = 5.0;
+        [_path moveToPoint:point];
+        
+        _shapeLayer = [CAShapeLayer layer];
+        _shapeLayer.path = _path.CGPath;
+        _shapeLayer.backgroundColor = [UIColor clearColor].CGColor;
+        _shapeLayer.fillColor = [UIColor clearColor].CGColor;
+        _shapeLayer.lineCap = kCALineCapRound;
+        _shapeLayer.lineJoin = kCALineJoinRound;
+        _shapeLayer.strokeColor = _strokeColor.CGColor;
+        _shapeLayer.lineWidth = _path.lineWidth;
+        [self.backgroundImageView.layer addSublayer:_shapeLayer];
+        [self.lines addObject:_shapeLayer];
+    }
+}
+// 为线条增加点
+-(void)touchesMoved:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event{
+    if (self.penButton.selected) {
+        UITouch *touch = [touches anyObject];
+        CGPoint point = [touch locationInView:self.backgroundImageView];
+        [_path addLineToPoint:point];
+        _shapeLayer.path = _path.CGPath;
+    }
+}
+
+#pragma mark configUI
 -(ColorView *)colorView{
     if (_colorView == nil) {
         _colorView = [[ColorView alloc] initWithFrame:CGRectMake(0, Screen_Height-([[UIApplication sharedApplication] statusBarFrame].size.height>20?78:44)-44, Screen_Width/9*8, 44)];
@@ -182,195 +387,14 @@
     }
     return _textButton;
 }
-
-#pragma mark 按钮绑定事件
--(void)cancelButtonAction:(UIButton *)sender{
-    [self.navigationController popViewControllerAnimated:YES];
+-(UIImage *)editedImage{
+//    if (_editedImage == nil) {
+        CGFloat imageScale = self.editImage.size.width/self.backgroundImageView.width;
+        UIGraphicsBeginImageContextWithOptions(self.backgroundImageView.frame.size, 1, imageScale);
+        [self.backgroundImageView.layer renderInContext:UIGraphicsGetCurrentContext()];
+        _editedImage = UIGraphicsGetImageFromCurrentImageContext();
+        UIGraphicsEndImageContext();
+//    }
+    return _editedImage;
 }
--(void)finishButtonAction:(UIButton *)sender{
-    self.backImage(self.editedImage);
-}
--(void)penButtonAction:(UIButton *)sender{
-    sender.selected = !sender.selected;
-    [UIView animateWithDuration:0.25 animations:^{
-        if (sender.selected) {
-            self.colorView.alpha = 1.0;
-            self.penRepealButton.alpha = 1.0;
-        }else{
-            self.colorView.alpha = 0.0;
-            self.penRepealButton.alpha = 0.0;
-        }
-    }];
-}
--(void)penRepealButtonAction:(UIButton *)sender{
-    if (self.lines.count > 0) {
-        CALayer *layer = self.lines.lastObject;
-        [layer removeFromSuperlayer];
-        [self.lines removeLastObject];
-    }
-}
--(void)textButtonAction:(UIButton *)sender{
-    self.colorView.alpha = 0.0;
-    self.penRepealButton.alpha = 0.0;
-    EditTextViewController *editTextVC = [EditTextViewController new];
-    editTextVC.view.backgroundColor = [UIColor clearColor];
-    editTextVC.view.backgroundColor = [UIColor colorWithRed:0 green:0 blue:0 alpha:0.7];
-    editTextVC.editInfo = ^(NSString *text, UIColor *color) {
-        EditedLabel *editedLabel = [EditedLabel new];
-        editedLabel.fixationRect = self.backgroundImageView.frame;
-        editedLabel.text = text;
-        editedLabel.font = [UIFont systemFontOfSize:24.0];
-        editedLabel.textColor = color;
-        [self.view addSubview:editedLabel];
-    };
-    [self.view addSubview:editTextVC.view];
-    [self addChildViewController:editTextVC];
-}
-
-#pragma mark 手势事件
--(void)tapAction:(UITapGestureRecognizer *)tap{
-    BOOL toolbarHidden = !self.toolBar.alpha;
-    [UIView animateWithDuration:0.25 animations:^{
-        if (toolbarHidden) {
-            [self showAnything];
-        }else{
-            [self hiddenAnythingWithoutBackimage];
-        }
-    }];
-}
--(void)oneTouchPanAction:(UIPanGestureRecognizer *)pan{
-    CGPoint point = [pan translationInView:pan.view];
-    pan.view.transform = CGAffineTransformTranslate(pan.view.transform, point.x, point.y);
-    //每次移动完，将移动量置为0，否则下次移动会加上这次移动量
-    [pan setTranslation:CGPointMake(0, 0) inView:pan.view];
-    if (pan.state == UIGestureRecognizerStateEnded) {
-        if (-pan.view.transform.tx>(pan.view.width-Screen_Width)/2) {
-            CGAffineTransform transform = pan.view.transform;
-            transform.tx = -(pan.view.width-Screen_Width)/2;
-            pan.view.transform = transform;
-        }else if(pan.view.transform.tx > (pan.view.width-Screen_Width)/2) {
-            CGAffineTransform transform = pan.view.transform;
-            transform.tx = (pan.view.width-Screen_Width)/2;
-            pan.view.transform = transform;
-        }
-        if (-pan.view.transform.ty>(pan.view.height-Screen_Height)/2) {
-            CGAffineTransform transform = pan.view.transform;
-            transform.ty = -(pan.view.height-Screen_Height)/2;
-            pan.view.transform = transform;
-        }else if(pan.view.transform.ty > (pan.view.height-Screen_Height)/2) {
-            CGAffineTransform transform = pan.view.transform;
-            transform.ty = (pan.view.height-Screen_Height)/2;
-            pan.view.transform = transform;
-        }
-    }
-}
--(void)doubleTouchPanAction:(UIPanGestureRecognizer *)pan{
-    CGPoint point = [pan translationInView:pan.view];
-    pan.view.transform = CGAffineTransformTranslate(pan.view.transform, point.x, point.y);
-    //每次移动完，将移动量置为0，否则下次移动会加上这次移动量
-    [pan setTranslation:CGPointMake(0, 0) inView:pan.view];
-    if (pan.state == UIGestureRecognizerStateEnded) {
-        if (-pan.view.transform.tx>(pan.view.width-Screen_Width)/2) {
-            CGAffineTransform transform = pan.view.transform;
-            transform.tx = -(pan.view.width-Screen_Width)/2;
-            pan.view.transform = transform;
-        }else if(pan.view.transform.tx > (pan.view.width-Screen_Width)/2) {
-            CGAffineTransform transform = pan.view.transform;
-            transform.tx = (pan.view.width-Screen_Width)/2;
-            pan.view.transform = transform;
-        }
-        if (-pan.view.transform.ty>(pan.view.height-Screen_Height)/2) {
-            CGAffineTransform transform = pan.view.transform;
-            transform.ty = -(pan.view.height-Screen_Height)/2;
-            pan.view.transform = transform;
-        }else if(pan.view.transform.ty > (pan.view.height-Screen_Height)/2) {
-            CGAffineTransform transform = pan.view.transform;
-            transform.ty = (pan.view.height-Screen_Height)/2;
-            pan.view.transform = transform;
-        }
-    }
-}
--(void)pinchAction:(UIPinchGestureRecognizer *)pinch{
-    if (pinch.state==UIGestureRecognizerStateBegan || pinch.state==UIGestureRecognizerStateChanged){
-        UIView *view=[pinch view];
-        //扩大、缩小倍数
-        view.transform=CGAffineTransformScale(view.transform, pinch.scale, pinch.scale);
-        scale *= pinch.scale;
-        pinch.scale=1;
-    }
-    // 结束的时候如果缩小倍数如果小于1，则回到原图的样子
-    if (pinch.state == UIGestureRecognizerStateEnded) {
-        if (scale < 1.0) {
-            scale = 1;
-            pinch.view.transform = CGAffineTransformIdentity;
-        }
-        [self hiddenAnythingWithoutBackimage];
-        NSLog(@"pinch.view.width = %f",pinch.view.width);
-    }
-}
-//改变颜色通知
--(void)changeColor:(NSNotification *)noti{
-    if (self.childViewControllers.count == 0) {
-        _strokeColor = noti.object[@"color"];
-    }
-}
-
--(void)viewWillAppear:(BOOL)animated{
-    [super viewWillAppear:animated];
-    self.navigationController.toolbarHidden = YES;
-    self.navigationController.navigationBarHidden = YES;
-}
--(void)viewWillDisappear:(BOOL)animated{
-    [super viewWillDisappear:animated];
-    self.navigationController.toolbarHidden = NO;
-    self.navigationController.navigationBarHidden = NO;
-}
--(void)showAnything{
-    self.toolBar.alpha = 1.0;
-    self.cancelButton.alpha = 1.0;
-    self.finishButton.alpha = 1.0;
-    if (self.penButton.selected) {
-        self.colorView.alpha = 1.0;
-        self.penRepealButton.alpha = 1.0;
-    }
-}
--(void)hiddenAnythingWithoutBackimage{
-    self.toolBar.alpha = 0.0;
-    self.cancelButton.alpha = 0.0;
-    self.finishButton.alpha = 0.0;
-    self.colorView.alpha = 0.0;
-    self.penRepealButton.alpha = 0.0;
-}
-
--(void)touchesBegan:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event{
-    onePan.enabled = !self.penButton.selected;
-    if (self.penButton.selected) {
-        UITouch *touch = [touches anyObject];
-        CGPoint point = [touch locationInView:self.backgroundImageView];
-        _path = [UIBezierPath bezierPath];
-        _path.lineWidth = 5.0;
-        [_path moveToPoint:point];
-        
-        _shapeLayer = [CAShapeLayer layer];
-        _shapeLayer.path = _path.CGPath;
-        _shapeLayer.backgroundColor = [UIColor clearColor].CGColor;
-        _shapeLayer.fillColor = [UIColor clearColor].CGColor;
-        _shapeLayer.lineCap = kCALineCapRound;
-        _shapeLayer.lineJoin = kCALineJoinRound;
-        _shapeLayer.strokeColor = _strokeColor.CGColor;
-        _shapeLayer.lineWidth = _path.lineWidth;
-        [self.backgroundImageView.layer addSublayer:_shapeLayer];
-        [_lines addObject:_shapeLayer];
-    }
-}
-
--(void)touchesMoved:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event{
-    if (self.penButton.selected) {
-        UITouch *touch = [touches anyObject];
-        CGPoint point = [touch locationInView:self.backgroundImageView];
-        [_path addLineToPoint:point];
-        _shapeLayer.path = _path.CGPath;
-    }
-}
-
 @end

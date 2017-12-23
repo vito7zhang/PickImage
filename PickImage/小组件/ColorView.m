@@ -42,7 +42,7 @@
         [colorButton addTarget:self action:@selector(colorChangeAction:) forControlEvents:UIControlEventTouchUpInside];
         [self addSubview:colorButton];
     }
-    UIView *view = self.subviews.firstObject;
+    UIView *view = self.subviews[2];
     view.frame = CGRectMake(view.frame.origin.x-2, view.frame.origin.y-2, 30.0, 30.0);
     view.layer.cornerRadius = 15.0;
 }

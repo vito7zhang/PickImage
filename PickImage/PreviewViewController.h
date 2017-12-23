@@ -20,9 +20,9 @@
 // 最多选择几张
 @property (nonatomic,assign)NSUInteger maxCount;
 // 所有图片数据
-@property (nonatomic,copy)NSArray *dataSource;
+@property (nonatomic,strong)NSMutableArray *dataSource;
 
 @property (nonatomic,weak)id <PreviewViewControlleProtocol> delegate;
-@property (nonatomic,weak)id <AlbumProtocol> albumDelegate;
+//@property (nonatomic,weak)id <AlbumProtocol> albumDelegate;
 
 @end

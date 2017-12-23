@@ -9,5 +9,6 @@
 #import <UIKit/UIKit.h>
 
 @interface EditedLabel : UILabel
+// 这个值要先设置呀，约束这个控制的位置同时固定位置
 @property (nonatomic,assign)CGRect fixationRect;
 @end
