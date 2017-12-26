@@ -11,6 +11,7 @@
 #import "PreviewViewController.h"
 #import "PhotoCollectionViewCell.h"
 #import "PHCachingImageManager+shareManager.h"
+#import "IFCAPickImageTool.h"
 
 #define Screen_Width [UIScreen mainScreen].bounds.size.width
 #define Screen_Height [UIScreen mainScreen].bounds.size.height
@@ -34,6 +35,7 @@
     
     [self setTitleView];
     [self cachingImage];
+
     // 初始化选择数组
     self.selectedArray = [NSMutableArray arrayWithCapacity:self.resultArray.count];
     [self.resultArray enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
@@ -186,15 +188,16 @@
     }
 }
 -(void)confirmBarButtonItemAction:(UIBarButtonItem *)sender{
-//    if ([self.delegate respondsToSelector:@selector(selectedImageWithAssetArray:)]) {
-//        NSMutableArray *result = [NSMutableArray array];
-//        [self.selectedArray enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
-//            if ([obj boolValue]) {
-//                [result addObject:[self.result objectAtIndex:idx]];
-//            }
-//        }];
-//        [self.delegate selectedImageWithAssetArray:result];
-//    }
+    NSMutableArray *marr = [NSMutableArray array];
+    [self.selectedArray enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+        if ([obj boolValue]) {
+            [marr addObject:self.resultArray[idx]];
+        }
+    }];
+    id delegate = [IFCAPickImageTool sharePickImageTool].delegate;
+    if ([delegate respondsToSelector:@selector(selectedImageWithResult:)]) {
+        [delegate selectedImageWithResult:self.selectedArray];
+    }
     [self.navigationController popViewControllerAnimated:YES];
 }
 

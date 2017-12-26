@@ -9,7 +9,7 @@
 #import "ViewController.h"
 #import "IFCAPickImageTool.h"
 
-@interface ViewController ()<AlbumProtocol>
+@interface ViewController ()<PickImageDelegate>
 
 @end
 
@@ -17,7 +17,7 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-
+        
     UIButton *showActionSheetButton = [UIButton buttonWithType:UIButtonTypeSystem];
     [showActionSheetButton setTitle:@"选择照片" forState:0];
     showActionSheetButton.frame = CGRectMake(40, 88, 80, 30);
@@ -28,12 +28,15 @@
 
 -(void)showActionSheetButtonAction:(UIButton *)sender{
     IFCAPickImageTool *tool = [IFCAPickImageTool new];
+    tool.delegate = self;
+//    tool.imageEdit = NO;
     [tool showInViewController:self];
 }
-
--(void)selectedImageWithAssetArray:(NSArray<PHAsset *> *)assets{
-    NSLog(@"我选取了这些照片：%@",assets);
+-(void)selectedImageWithResult:(NSArray<PHAsset *> *)result{
+    NSLog(@"result = %@",result);
+    NSLog(@"result = %@",result);
 }
+
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];

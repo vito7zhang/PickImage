@@ -8,6 +8,18 @@
 
 #import <UIKit/UIKit.h>
 
+typedef NS_ENUM(NSInteger, SelectedColor) {
+    blackColor = 0,
+    whiteColor,
+    redColor,
+    orangeColor,
+    greenColor,
+    blueColor,
+    purpleColor,
+    cyanColor
+};
+
 @interface ColorView : UIView
+@property (nonatomic,assign)UIColor *selectedColor;
 
 @end

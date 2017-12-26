@@ -67,4 +67,6 @@
  * @brief Shortcut for frame.size
  */
 @property (nonatomic) CGSize size;
+
+- (UIViewController *)getCurrentVC;
 @end

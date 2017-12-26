@@ -8,16 +8,45 @@
 
 #import "IFCAPickImageTool.h"
 #import "AlbumViewController.h"
-#import "CameraViewController.h"
+#import "RACustomCameraController.h"
 #import <Photos/Photos.h>
 
-@interface IFCAPickImageTool ()<AlbumProtocol>
+@interface IFCAPickImageTool ()
 @property (nonatomic,strong)UIAlertController *alertController;
 @property (nonatomic,weak)UIViewController *vc;
 @end
 
-@implementation IFCAPickImageTool
+static IFCAPickImageTool *_tool = nil;
 
+@implementation IFCAPickImageTool
++(instancetype)sharePickImageTool{
+    return [[self alloc] init];
+}
++(instancetype)allocWithZone:(struct _NSZone *)zone{
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        _tool = [super allocWithZone:zone];
+        [_tool defaultConfiguration];
+    });
+    return _tool;
+}
+- (instancetype)init{
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        _tool = [super init];
+        [_tool defaultConfiguration];
+    });
+    return _tool;
+}
+
+-(void)defaultConfiguration{
+    _tool.imageEdit = YES;
+    _tool.maxCount = 9;
+    _tool.waterMark = YES;
+    NSDateFormatter *formatter = [NSDateFormatter new];
+    [formatter setDateFormat:@"yyyy-MM-dd"];
+    _tool.waterMarkText = [formatter stringFromDate:[NSDate date]];
+}
 -(void)showInViewController:(UIViewController *)vc{
     _vc = vc;
     [vc presentViewController:self.alertController animated:YES completion:nil];
@@ -27,18 +56,22 @@
     if (_alertController == nil) {
         _alertController = [UIAlertController alertControllerWithTitle:@"提醒" message:@"请选择照片位置" preferredStyle:UIAlertControllerStyleActionSheet];
         UIAlertAction *cameraAction = [UIAlertAction actionWithTitle:@"相机" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+            RACustomCameraController *cVC = [RACustomCameraController new];
+            [_vc presentViewController:cVC animated:YES completion:nil];
         }];
         UIAlertAction *albumAction = [UIAlertAction actionWithTitle:@"相册" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
             if ([PHPhotoLibrary authorizationStatus] == PHAuthorizationStatusNotDetermined) {
                 [PHPhotoLibrary requestAuthorization:^(PHAuthorizationStatus status) {
-                    if (status == PHAuthorizationStatusAuthorized) {
-                        AlbumViewController *albumVC = [AlbumViewController new];
-                        albumVC.maxCount = 9;
-//                        albumVC.delegate = self;
-                        [_vc.navigationController pushViewController:albumVC animated:YES];
-                    }else if ([PHPhotoLibrary authorizationStatus] != PHAuthorizationStatusAuthorized){
-                        [self showAlertToOpenauthorizationStatus];
-                    }
+                    dispatch_async(dispatch_get_main_queue(), ^{
+                        if (status == PHAuthorizationStatusAuthorized) {
+                            AlbumViewController *albumVC = [AlbumViewController new];
+                            albumVC.maxCount = 9;
+    //                        albumVC.delegate = self;
+                            [_vc.navigationController pushViewController:albumVC animated:YES];
+                        }else if ([PHPhotoLibrary authorizationStatus] != PHAuthorizationStatusAuthorized){
+                            [self showAlertToOpenauthorizationStatus];
+                        }
+                    });
                 }];
             }else if ([PHPhotoLibrary authorizationStatus] != PHAuthorizationStatusAuthorized){
                 [self showAlertToOpenauthorizationStatus];
@@ -65,13 +98,6 @@
     [_vc presentViewController:controller animated:YES completion:nil];
     return ;
 
-}
-
--(void)selectedImageWithAssetArray:(NSArray<PHAsset *> *)assets{
-    NSLog(@"asset ===== %@",assets);
-    if (!_waterMark) {
-        [_vc.navigationController pushViewController:[CameraViewController new] animated:NO];
-    }
 }
 
 @end

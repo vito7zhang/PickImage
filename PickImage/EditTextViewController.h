@@ -7,7 +7,10 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "ColorView.h"
 
 @interface EditTextViewController : UIViewController
+@property (nonatomic,strong)UITextView *mainTextView;
+@property (nonatomic,strong)ColorView *colorView;
 @property (nonatomic,copy)void (^editInfo)(NSString *,UIColor *);
 @end

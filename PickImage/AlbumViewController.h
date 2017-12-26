@@ -9,10 +9,6 @@
 #import <UIKit/UIKit.h>
 #import <Photos/Photos.h>
 
-@protocol AlbumProtocol<NSObject>
--(void)selectedImageWithAssetArray:(NSArray<PHAsset *> *)assets;
-@end
-
 @interface AlbumViewController : UIViewController
 // 最大选择图片张数，默认9。为0时候可以选择无限。
 @property (nonatomic,assign)NSUInteger maxCount;

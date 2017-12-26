@@ -119,12 +119,13 @@
 }
 -(void)finishButtonAction:(UIButton *)sender{
     self.backImage(self.editedImage);
-    [self.navigationController popViewControllerAnimated:YES];
-
-//    NSData *data = UIImagePNGRepresentation(self.editedImage);
-//    [data writeToFile:@"/Users/vito7zhang/Desktop/1.png" atomically:YES];
+    UIViewController *vc = [self.navigationController popViewControllerAnimated:YES];
+//    if (vc == nil) {
+//        [self dismissViewControllerAnimated:YES completion:nil];
+//    }
 }
 -(void)penButtonAction:(UIButton *)sender{
+    onePan.enabled = NO;
     sender.selected = !sender.selected;
     [UIView animateWithDuration:0.25 animations:^{
         if (sender.selected) {
@@ -284,7 +285,7 @@
 }
 // 移动绘制线条
 -(void)touchesBegan:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event{
-    onePan.enabled = !self.penButton.selected;
+//    onePan.enabled = !self.penButton.selected;
     if (self.penButton.selected) {
         UITouch *touch = [touches anyObject];
         CGPoint point = [touch locationInView:self.backgroundImageView];
@@ -388,13 +389,13 @@
     return _textButton;
 }
 -(UIImage *)editedImage{
-//    if (_editedImage == nil) {
+    if (_editedImage == nil) {
         CGFloat imageScale = self.editImage.size.width/self.backgroundImageView.width;
         UIGraphicsBeginImageContextWithOptions(self.backgroundImageView.frame.size, 1, imageScale);
         [self.backgroundImageView.layer renderInContext:UIGraphicsGetCurrentContext()];
         _editedImage = UIGraphicsGetImageFromCurrentImageContext();
         UIGraphicsEndImageContext();
-//    }
+    }
     return _editedImage;
 }
 @end

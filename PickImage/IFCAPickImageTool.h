@@ -9,9 +9,15 @@
 #import <UIKit/UIKit.h>
 #import "AlbumViewController.h"
 
+@protocol PickImageDelegate
+-(void)selectedImageWithResult:(NSArray <PHAsset *>*)result;
+@end
+
 @interface IFCAPickImageTool : NSObject
+
++(instancetype)sharePickImageTool;
 // 选择最大图片数目
-@property (nonatomic,assign)NSUInteger maxCount;
+@property (nonatomic,assign) NSUInteger maxCount;
 // 是否允许编辑
 @property (nonatomic, assign) BOOL imageEdit;
 // 是否有水印
@@ -19,5 +25,9 @@
 // 自定义水印文字
 @property (nonatomic, copy) NSString *waterMarkText;
 
+@property (nonatomic,weak) id <PickImageDelegate>delegate;
+
 -(void)showInViewController:(UIViewController *)vc;
+
+
 @end

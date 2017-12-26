@@ -14,6 +14,7 @@
 @end
 
 @interface PreviewViewController : UIViewController
+// 这是被选中的图片的数据，0未选中，1选中
 @property (nonatomic,strong)NSMutableArray *selectedArray;
 // 当前是第几张
 @property (nonatomic,assign)NSUInteger page;

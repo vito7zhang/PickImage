@@ -38,6 +38,7 @@
         colorButton.layer.cornerRadius = 13.0;
         colorButton.layer.borderColor = [UIColor whiteColor].CGColor;
         colorButton.layer.borderWidth = 3.0;
+        colorButton.tag = 1000+i;
         colorButton.frame = CGRectMake(space*(i+1)+width*i, frame.size.height/2.0-width/2, width, width);
         [colorButton addTarget:self action:@selector(colorChangeAction:) forControlEvents:UIControlEventTouchUpInside];
         [self addSubview:colorButton];
@@ -46,19 +47,20 @@
     view.frame = CGRectMake(view.frame.origin.x-2, view.frame.origin.y-2, 30.0, 30.0);
     view.layer.cornerRadius = 15.0;
 }
--(void)setFrame:(CGRect)frame{
-    [super setFrame:frame];
-    [self resizeButton];
-    UIView *view = self.subviews.firstObject;
-    view.frame = CGRectMake(view.frame.origin.x-2, view.frame.origin.y-2, 30.0, 30.0);
-    view.layer.cornerRadius = 15.0;
-}
+//-(void)setFrame:(CGRect)frame{
+//    [super setFrame:frame];
+//    [self resizeButton];
+//    UIView *view = self.subviews.firstObject;
+//    view.frame = CGRectMake(view.frame.origin.x-2, view.frame.origin.y-2, 30.0, 30.0);
+//    view.layer.cornerRadius = 15.0;
+//}
 
 -(void)colorChangeAction:(UIButton *)sender{
+    _selectedColor = sender.backgroundColor;
     [self resizeButton];
-    sender.layer.cornerRadius = 15.0;
     CGRect rect = sender.frame;
     sender.frame = CGRectMake(rect.origin.x-2, rect.origin.y-2, 30.0, 30.0);
+    sender.layer.cornerRadius = 15.0;
     [[NSNotificationCenter defaultCenter] postNotificationName:@"ChangeColor" object:@{@"color":sender.backgroundColor}];
 }
 
@@ -68,6 +70,19 @@
     for (int i = 0; i < self.subviews.count; i++) {
         UIView *view = self.subviews[i];
         view.frame = CGRectMake(space*(i+1)+width*i, self.frame.size.height/2.0-width/2, width, width);
+        view.layer.cornerRadius = 13.0;
     }
 }
+-(void)setSelectedColor:(UIColor *)selectedColor{
+    _selectedColor = selectedColor;
+    for (UIButton *btn in self.subviews) {
+        if (btn.backgroundColor == selectedColor) {
+            [self colorChangeAction:btn];
+            return;
+        }
+    }
+//    UIButton *button = [self viewWithTag:selectedColor];
+//    [self colorChangeAction:button];
+}
+
 @end

@@ -7,7 +7,6 @@
 //
 
 #import "EditTextViewController.h"
-#import "ColorView.h"
 
 #define Screen_Width [UIScreen mainScreen].bounds.size.width
 #define Screen_Height [UIScreen mainScreen].bounds.size.height
@@ -20,8 +19,6 @@
 @interface EditTextViewController ()<UITextViewDelegate>
 @property (nonatomic,strong)UIButton *cancelButton;
 @property (nonatomic,strong)UIButton *finishButton;
-@property (nonatomic,strong)UITextView *mainTextView;
-@property (nonatomic,strong)ColorView *colorView;
 @end
 
 
@@ -71,8 +68,8 @@
         _mainTextView = [[UITextView alloc]initWithFrame:CGRectMake(0, 70, Screen_Width, Screen_Height-44-70)];
         _mainTextView.backgroundColor = [UIColor clearColor];
         _mainTextView.textColor = [UIColor redColor];
+        _mainTextView.tintColor = [UIColor redColor];
         _mainTextView.font = [UIFont systemFontOfSize:24.0];
-        _mainTextView.tintColor = [UIColor blackColor];
     }
     return _mainTextView;
 }

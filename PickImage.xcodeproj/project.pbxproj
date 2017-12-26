@@ -7,6 +7,12 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		A01E6C811FF231370078F1AB /* RACustomCameraController.m in Sources */ = {isa = PBXBuildFile; fileRef = A01E6C801FF231360078F1AB /* RACustomCameraController.m */; };
+		A01E6C871FF234E80078F1AB /* flashlight_auto.png in Resources */ = {isa = PBXBuildFile; fileRef = A01E6C821FF234E70078F1AB /* flashlight_auto.png */; };
+		A01E6C881FF234E80078F1AB /* flashlight_on.png in Resources */ = {isa = PBXBuildFile; fileRef = A01E6C831FF234E80078F1AB /* flashlight_on.png */; };
+		A01E6C891FF234E80078F1AB /* reversal.png in Resources */ = {isa = PBXBuildFile; fileRef = A01E6C841FF234E80078F1AB /* reversal.png */; };
+		A01E6C8A1FF234E80078F1AB /* round.png in Resources */ = {isa = PBXBuildFile; fileRef = A01E6C851FF234E80078F1AB /* round.png */; };
+		A01E6C8B1FF234E80078F1AB /* flashlight_off.png in Resources */ = {isa = PBXBuildFile; fileRef = A01E6C861FF234E80078F1AB /* flashlight_off.png */; };
 		A0629BCB1FCD96550020F777 /* pen.png in Resources */ = {isa = PBXBuildFile; fileRef = A0629BC91FCD96550020F777 /* pen.png */; };
 		A0629BCC1FCD96550020F777 /* T.png in Resources */ = {isa = PBXBuildFile; fileRef = A0629BCA1FCD96550020F777 /* T.png */; };
 		A0629BD11FCE483D0020F777 /* EditTextViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A0629BD01FCE483D0020F777 /* EditTextViewController.m */; };
@@ -20,13 +26,13 @@
 		A072D7A11FC67B19008E7A4A /* CountLabel.m in Sources */ = {isa = PBXBuildFile; fileRef = A072D7A01FC67B19008E7A4A /* CountLabel.m */; };
 		A099543D1FCFB68300C70379 /* UIView+Extension.m in Sources */ = {isa = PBXBuildFile; fileRef = A099543C1FCFB68300C70379 /* UIView+Extension.m */; };
 		A0A07CE51FED251300BFE971 /* repeal.png in Resources */ = {isa = PBXBuildFile; fileRef = A0A07CE41FED251300BFE971 /* repeal.png */; };
+		A0A07CE81FEE411C00BFE971 /* IFCAWaterMarkTool.m in Sources */ = {isa = PBXBuildFile; fileRef = A0A07CE71FEE411C00BFE971 /* IFCAWaterMarkTool.m */; };
 		A0C09D771FC45A6000B7B9BE /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = A0C09D761FC45A6000B7B9BE /* AppDelegate.m */; };
 		A0C09D7A1FC45A6000B7B9BE /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A0C09D791FC45A6000B7B9BE /* ViewController.m */; };
 		A0C09D7D1FC45A6000B7B9BE /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A0C09D7B1FC45A6000B7B9BE /* Main.storyboard */; };
 		A0C09D7F1FC45A6000B7B9BE /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A0C09D7E1FC45A6000B7B9BE /* Assets.xcassets */; };
 		A0C09D821FC45A6000B7B9BE /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A0C09D801FC45A6000B7B9BE /* LaunchScreen.storyboard */; };
 		A0C09D851FC45A6000B7B9BE /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = A0C09D841FC45A6000B7B9BE /* main.m */; };
-		A0C09D8D1FC45B0800B7B9BE /* CameraViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A0C09D8C1FC45B0800B7B9BE /* CameraViewController.m */; };
 		A0C09D941FC51C9C00B7B9BE /* IFCAPickImageTool.m in Sources */ = {isa = PBXBuildFile; fileRef = A0C09D931FC51C9C00B7B9BE /* IFCAPickImageTool.m */; };
 		A0C09D981FC57E4E00B7B9BE /* AlbumViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A0C09D971FC57E4D00B7B9BE /* AlbumViewController.m */; };
 		A0C09D9F1FC57F1C00B7B9BE /* PhotoCollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = A0C09D9D1FC57F1C00B7B9BE /* PhotoCollectionViewCell.m */; };
@@ -37,6 +43,13 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		A01E6C7F1FF231360078F1AB /* RACustomCameraController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RACustomCameraController.h; sourceTree = "<group>"; };
+		A01E6C801FF231360078F1AB /* RACustomCameraController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RACustomCameraController.m; sourceTree = "<group>"; };
+		A01E6C821FF234E70078F1AB /* flashlight_auto.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = flashlight_auto.png; sourceTree = "<group>"; };
+		A01E6C831FF234E80078F1AB /* flashlight_on.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = flashlight_on.png; sourceTree = "<group>"; };
+		A01E6C841FF234E80078F1AB /* reversal.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = reversal.png; sourceTree = "<group>"; };
+		A01E6C851FF234E80078F1AB /* round.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = round.png; sourceTree = "<group>"; };
+		A01E6C861FF234E80078F1AB /* flashlight_off.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = flashlight_off.png; sourceTree = "<group>"; };
 		A0629BC91FCD96550020F777 /* pen.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = pen.png; sourceTree = "<group>"; };
 		A0629BCA1FCD96550020F777 /* T.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = T.png; sourceTree = "<group>"; };
 		A0629BCF1FCE483D0020F777 /* EditTextViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = EditTextViewController.h; sourceTree = "<group>"; };
@@ -59,6 +72,8 @@
 		A099543B1FCFB68300C70379 /* UIView+Extension.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "UIView+Extension.h"; sourceTree = "<group>"; };
 		A099543C1FCFB68300C70379 /* UIView+Extension.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "UIView+Extension.m"; sourceTree = "<group>"; };
 		A0A07CE41FED251300BFE971 /* repeal.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = repeal.png; sourceTree = "<group>"; };
+		A0A07CE61FEE411C00BFE971 /* IFCAWaterMarkTool.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = IFCAWaterMarkTool.h; sourceTree = "<group>"; };
+		A0A07CE71FEE411C00BFE971 /* IFCAWaterMarkTool.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = IFCAWaterMarkTool.m; sourceTree = "<group>"; };
 		A0C09D721FC45A6000B7B9BE /* PickImage.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = PickImage.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		A0C09D751FC45A6000B7B9BE /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		A0C09D761FC45A6000B7B9BE /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
@@ -69,8 +84,6 @@
 		A0C09D811FC45A6000B7B9BE /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		A0C09D831FC45A6000B7B9BE /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		A0C09D841FC45A6000B7B9BE /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
-		A0C09D8B1FC45B0800B7B9BE /* CameraViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CameraViewController.h; sourceTree = "<group>"; };
-		A0C09D8C1FC45B0800B7B9BE /* CameraViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CameraViewController.m; sourceTree = "<group>"; };
 		A0C09D921FC51C9C00B7B9BE /* IFCAPickImageTool.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = IFCAPickImageTool.h; sourceTree = "<group>"; };
 		A0C09D931FC51C9C00B7B9BE /* IFCAPickImageTool.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = IFCAPickImageTool.m; sourceTree = "<group>"; };
 		A0C09D961FC57E4D00B7B9BE /* AlbumViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AlbumViewController.h; sourceTree = "<group>"; };
@@ -150,8 +163,8 @@
 				A0C09D791FC45A6000B7B9BE /* ViewController.m */,
 				A0C09D921FC51C9C00B7B9BE /* IFCAPickImageTool.h */,
 				A0C09D931FC51C9C00B7B9BE /* IFCAPickImageTool.m */,
-				A0C09D8B1FC45B0800B7B9BE /* CameraViewController.h */,
-				A0C09D8C1FC45B0800B7B9BE /* CameraViewController.m */,
+				A01E6C7F1FF231360078F1AB /* RACustomCameraController.h */,
+				A01E6C801FF231360078F1AB /* RACustomCameraController.m */,
 				A0C09D961FC57E4D00B7B9BE /* AlbumViewController.h */,
 				A0C09D971FC57E4D00B7B9BE /* AlbumViewController.m */,
 				A072D7A21FC6EE15008E7A4A /* PreviewViewController.h */,
@@ -164,6 +177,11 @@
 				A06338801FCBBEEC00AF8BD6 /* 小组件 */,
 				A072D79C1FC665D2008E7A4A /* PHCachingImageManager+shareManager.h */,
 				A072D79D1FC665D2008E7A4A /* PHCachingImageManager+shareManager.m */,
+				A01E6C821FF234E70078F1AB /* flashlight_auto.png */,
+				A01E6C861FF234E80078F1AB /* flashlight_off.png */,
+				A01E6C831FF234E80078F1AB /* flashlight_on.png */,
+				A01E6C841FF234E80078F1AB /* reversal.png */,
+				A01E6C851FF234E80078F1AB /* round.png */,
 				A0A07CE41FED251300BFE971 /* repeal.png */,
 				A0629BC91FCD96550020F777 /* pen.png */,
 				A0629BCA1FCD96550020F777 /* T.png */,
@@ -174,6 +192,8 @@
 				A0C09D801FC45A6000B7B9BE /* LaunchScreen.storyboard */,
 				A0C09D831FC45A6000B7B9BE /* Info.plist */,
 				A0C09D841FC45A6000B7B9BE /* main.m */,
+				A0A07CE61FEE411C00BFE971 /* IFCAWaterMarkTool.h */,
+				A0A07CE71FEE411C00BFE971 /* IFCAWaterMarkTool.m */,
 			);
 			path = PickImage;
 			sourceTree = "<group>";
@@ -236,13 +256,18 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A01E6C8A1FF234E80078F1AB /* round.png in Resources */,
 				A0C09D821FC45A6000B7B9BE /* LaunchScreen.storyboard in Resources */,
 				A0C09DA01FC57F1C00B7B9BE /* PhotoCollectionViewCell.xib in Resources */,
+				A01E6C8B1FF234E80078F1AB /* flashlight_off.png in Resources */,
 				A0C09D7F1FC45A6000B7B9BE /* Assets.xcassets in Resources */,
 				A0629BCC1FCD96550020F777 /* T.png in Resources */,
 				A0A07CE51FED251300BFE971 /* repeal.png in Resources */,
 				A0C09DA31FC59B9600B7B9BE /* selected.png in Resources */,
+				A01E6C881FF234E80078F1AB /* flashlight_on.png in Resources */,
 				A0C09D7D1FC45A6000B7B9BE /* Main.storyboard in Resources */,
+				A01E6C891FF234E80078F1AB /* reversal.png in Resources */,
+				A01E6C871FF234E80078F1AB /* flashlight_auto.png in Resources */,
 				A0629BCB1FCD96550020F777 /* pen.png in Resources */,
 				A06338881FCC19D700AF8BD6 /* PreviewCollectionViewCell.xib in Resources */,
 				A0C09DA41FC59B9600B7B9BE /* unselected.png in Resources */,
@@ -262,11 +287,12 @@
 				A063387F1FCBBBE700AF8BD6 /* IFCAImageTextButton.m in Sources */,
 				A0E636601FECA2D70013500A /* EditedLabel.m in Sources */,
 				A063388E1FCD5D2400AF8BD6 /* ColorView.m in Sources */,
-				A0C09D8D1FC45B0800B7B9BE /* CameraViewController.m in Sources */,
+				A01E6C811FF231370078F1AB /* RACustomCameraController.m in Sources */,
 				A072D79E1FC665D2008E7A4A /* PHCachingImageManager+shareManager.m in Sources */,
 				A0C09D981FC57E4E00B7B9BE /* AlbumViewController.m in Sources */,
 				A0C09D941FC51C9C00B7B9BE /* IFCAPickImageTool.m in Sources */,
 				A0C09D851FC45A6000B7B9BE /* main.m in Sources */,
+				A0A07CE81FEE411C00BFE971 /* IFCAWaterMarkTool.m in Sources */,
 				A063388B1FCD41D200AF8BD6 /* EditViewController.m in Sources */,
 				A0629BD11FCE483D0020F777 /* EditTextViewController.m in Sources */,
 				A0C09D771FC45A6000B7B9BE /* AppDelegate.m in Sources */,
@@ -407,10 +433,10 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = RHFDMH5ZXJ;
+				DEVELOPMENT_TEAM = 3APPD8R58X;
 				INFOPLIST_FILE = PickImage/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = My.PickImage;
+				PRODUCT_BUNDLE_IDENTIFIER = My.PickImage2;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -421,10 +447,10 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = RHFDMH5ZXJ;
+				DEVELOPMENT_TEAM = 3APPD8R58X;
 				INFOPLIST_FILE = PickImage/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = My.PickImage;
+				PRODUCT_BUNDLE_IDENTIFIER = My.PickImage2;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};

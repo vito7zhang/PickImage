@@ -8,6 +8,7 @@
 
 #import "EditedLabel.h"
 #import "UIView+Extension.h"
+#import "EditTextViewController.h"
 
 #define Screen_Width [UIScreen mainScreen].bounds.size.width
 #define Screen_Height [UIScreen mainScreen].bounds.size.height
@@ -82,7 +83,28 @@
 }
 
 -(void)tapAction:(UITapGestureRecognizer *)tap{
-    [self showBorder];
+    if (self.layer.borderWidth > 0) {
+        self.transform = CGAffineTransformIdentity;
+        EditTextViewController *editTextVC = [EditTextViewController new];
+        editTextVC.view.backgroundColor = [UIColor colorWithRed:0 green:0 blue:0 alpha:0.7];
+        editTextVC.mainTextView.textColor = self.textColor;
+        editTextVC.mainTextView.tintColor = self.textColor;
+        editTextVC.mainTextView.text = self.text;
+        editTextVC.colorView.selectedColor = self.textColor;
+        editTextVC.editInfo = ^(NSString *text, UIColor *color) {
+            if ([text isEqualToString:@""] || text == nil) {
+                [self removeFromSuperview];
+            }else{
+                self.text = text;
+                self.textColor = color;
+                self.font = [UIFont systemFontOfSize:24.0];
+            }
+        };
+        [self.getCurrentVC.view addSubview:editTextVC.view];
+        [self.getCurrentVC addChildViewController:editTextVC];
+    }else{
+        [self showBorder];
+    }
 }
 
 -(void)pinchAction:(UIPinchGestureRecognizer *)pinch{

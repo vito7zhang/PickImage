@@ -12,6 +12,7 @@
 #import "CountLabel.h"
 #import "PreviewCollectionViewCell.h"
 #import "EditViewController.h"
+#import "IFCAPickImageTool.h"
 
 #define Screen_Width [UIScreen mainScreen].bounds.size.width
 #define Screen_Height [UIScreen mainScreen].bounds.size.height
@@ -81,8 +82,11 @@
     [vesselView addSubview:self.selectButton];
     UIBarButtonItem *selectBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:vesselView];
     UIBarButtonItem *flexItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil];
-    
-    [self setToolbarItems:@[editBarButtonItem,flexItem,selectBarButtonItem]];
+    if ([[IFCAPickImageTool sharePickImageTool] imageEdit]) {
+        [self setToolbarItems:@[editBarButtonItem,flexItem,selectBarButtonItem]];
+    }else{
+        [self setToolbarItems:@[flexItem,selectBarButtonItem]];
+    }
     
     self.navigationItem.titleView = self.countLabel;
     
@@ -126,6 +130,8 @@
         _previewCollectionView.backgroundColor = [UIColor colorWithRed:0.5 green:0.5 blue:0.5 alpha:0.5];
         _previewCollectionView.delegate = self;
         _previewCollectionView.dataSource = self;
+        _previewCollectionView.showsVerticalScrollIndicator = NO;
+        _previewCollectionView.showsVerticalScrollIndicator = NO;
         [_previewCollectionView registerNib:[UINib nibWithNibName:@"PreviewCollectionViewCell" bundle:[NSBundle mainBundle]] forCellWithReuseIdentifier:@"PreviewViewControllerCollectionCell"];
     }
     return _previewCollectionView;
@@ -207,10 +213,20 @@
     editVC.backImage = ^(UIImage *image) {
         [self saveImage:image];
         self.nowImageView.image = image;
+        self.nowImage = image;
     };
     [self.navigationController pushViewController:editVC animated:YES];
 }
 -(void)selectButtonAction:(UIButton *)sender{
+    if (!sender.selected) {
+        if (![self.countLabel increase]) {
+            return;
+        }
+    }else if(sender.selected){
+        if (![self.countLabel decrease]) {
+            return;
+        }
+    }
     sender.selected = !sender.selected;
     NSInteger selected = sender.selected;
     self.selectedArray[self.page] = @(selected);
@@ -221,23 +237,19 @@
     }
     _previewCollectionView.hidden = !self.previewDataSource.count;
     [self.previewCollectionView reloadData];
-    if (sender.selected) {
-        [_countLabel increase];
-    }else{
-        [_countLabel decrease];
-    }
 }
 -(void)pickBarButtonItemAction:(UIBarButtonItem *)sender{
     UIViewController *vc = [self.navigationController.viewControllers objectAtIndex:self.navigationController.viewControllers.count-3];
-//    if ([self.albumDelegate respondsToSelector:@selector(selectedImageWithAssetArray:)]) {
-//        NSMutableArray *result = [NSMutableArray array];
-//        [self.selectedArray enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
-//            if ([obj boolValue]) {
-//                [result addObject:[self.dataSource objectAtIndex:idx]];
-//            }
-//        }];
-//        [self.delegate performSelector:@selector(selectedImageWithAssetArray:) withObject:result];
-//    }
+    NSMutableArray *marr = [NSMutableArray array];
+    [self.selectedArray enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+        if ([obj boolValue]) {
+            [marr addObject:self.dataSource[idx]];
+        }
+    }];
+    id delegate = [IFCAPickImageTool sharePickImageTool].delegate;
+    if ([delegate respondsToSelector:@selector(selectedImageWithResult:)]) {
+        [delegate selectedImageWithResult:marr];
+    }
     [self.navigationController popToViewController:vc animated:YES];
 }
 -(void)backButtonAction:(UIBarButtonItem *)sender{
@@ -349,6 +361,7 @@
         self.nowImage = result;
         self.nowImageView.image = result;
     }];
+    self.selectButton.selected = YES;
     [collectionView reloadData];
 }
 
