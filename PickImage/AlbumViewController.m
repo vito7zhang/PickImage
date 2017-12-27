@@ -196,7 +196,7 @@
     }];
     id delegate = [IFCAPickImageTool sharePickImageTool].delegate;
     if ([delegate respondsToSelector:@selector(selectedImageWithResult:)]) {
-        [delegate selectedImageWithResult:self.selectedArray];
+        [delegate selectedImageWithResult:marr];
     }
     [self.navigationController popViewControllerAnimated:YES];
 }

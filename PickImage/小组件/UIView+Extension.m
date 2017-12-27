@@ -135,14 +135,14 @@
         }
     }
     
-    UIView *frontView = [[window subviews] objectAtIndex:0];
-    id nextResponder = [frontView nextResponder];
-    
-    if ([nextResponder isKindOfClass:[UIViewController class]])
-        result = nextResponder;
-    else
-        result = window.rootViewController;
-    
+    id responder = self;
+    while ([responder nextResponder]) {
+        if ([responder isKindOfClass:[UIViewController class]]){
+            result = responder;
+            break;
+        }
+        responder = [responder nextResponder];
+    }
     return result;
 }
 @end

@@ -28,7 +28,6 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.view.backgroundColor = [UIColor blackColor];
-    
     [self.view addSubview:self.cancelButton];
     [self.view addSubview:self.finishButton];
     [self.view addSubview:self.mainTextView];

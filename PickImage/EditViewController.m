@@ -59,7 +59,8 @@
     self.strokeColor = [UIColor redColor];
     self.lines = [NSMutableArray array];
     self.texts = [NSMutableArray array];
-    
+    NSLog(@"editview = %p",self);
+
     [self.view addSubview:self.containView];
     [self.view addSubview:self.cancelButton];
     [self.view addSubview:self.colorView];
@@ -116,6 +117,10 @@
 #pragma mark 按钮绑定事件
 -(void)cancelButtonAction:(UIButton *)sender{
     [self.navigationController popViewControllerAnimated:YES];
+    UIViewController *vc = [self.navigationController popViewControllerAnimated:YES];
+    if (vc == nil) {
+        [self dismissViewControllerAnimated:YES completion:nil];
+    }
 }
 -(void)finishButtonAction:(UIButton *)sender{
     self.backImage(self.editedImage);

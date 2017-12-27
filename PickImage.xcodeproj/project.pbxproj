@@ -13,6 +13,8 @@
 		A01E6C891FF234E80078F1AB /* reversal.png in Resources */ = {isa = PBXBuildFile; fileRef = A01E6C841FF234E80078F1AB /* reversal.png */; };
 		A01E6C8A1FF234E80078F1AB /* round.png in Resources */ = {isa = PBXBuildFile; fileRef = A01E6C851FF234E80078F1AB /* round.png */; };
 		A01E6C8B1FF234E80078F1AB /* flashlight_off.png in Resources */ = {isa = PBXBuildFile; fileRef = A01E6C861FF234E80078F1AB /* flashlight_off.png */; };
+		A01E6C961FF3873F0078F1AB /* testCollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = A01E6C941FF3873F0078F1AB /* testCollectionViewCell.m */; };
+		A01E6C971FF3873F0078F1AB /* testCollectionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = A01E6C951FF3873F0078F1AB /* testCollectionViewCell.xib */; };
 		A0629BCB1FCD96550020F777 /* pen.png in Resources */ = {isa = PBXBuildFile; fileRef = A0629BC91FCD96550020F777 /* pen.png */; };
 		A0629BCC1FCD96550020F777 /* T.png in Resources */ = {isa = PBXBuildFile; fileRef = A0629BCA1FCD96550020F777 /* T.png */; };
 		A0629BD11FCE483D0020F777 /* EditTextViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A0629BD01FCE483D0020F777 /* EditTextViewController.m */; };
@@ -50,6 +52,9 @@
 		A01E6C841FF234E80078F1AB /* reversal.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = reversal.png; sourceTree = "<group>"; };
 		A01E6C851FF234E80078F1AB /* round.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = round.png; sourceTree = "<group>"; };
 		A01E6C861FF234E80078F1AB /* flashlight_off.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = flashlight_off.png; sourceTree = "<group>"; };
+		A01E6C931FF3873F0078F1AB /* testCollectionViewCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = testCollectionViewCell.h; sourceTree = "<group>"; };
+		A01E6C941FF3873F0078F1AB /* testCollectionViewCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = testCollectionViewCell.m; sourceTree = "<group>"; };
+		A01E6C951FF3873F0078F1AB /* testCollectionViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = testCollectionViewCell.xib; sourceTree = "<group>"; };
 		A0629BC91FCD96550020F777 /* pen.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = pen.png; sourceTree = "<group>"; };
 		A0629BCA1FCD96550020F777 /* T.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = T.png; sourceTree = "<group>"; };
 		A0629BCF1FCE483D0020F777 /* EditTextViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = EditTextViewController.h; sourceTree = "<group>"; };
@@ -161,6 +166,9 @@
 				A0C09D761FC45A6000B7B9BE /* AppDelegate.m */,
 				A0C09D781FC45A6000B7B9BE /* ViewController.h */,
 				A0C09D791FC45A6000B7B9BE /* ViewController.m */,
+				A01E6C931FF3873F0078F1AB /* testCollectionViewCell.h */,
+				A01E6C941FF3873F0078F1AB /* testCollectionViewCell.m */,
+				A01E6C951FF3873F0078F1AB /* testCollectionViewCell.xib */,
 				A0C09D921FC51C9C00B7B9BE /* IFCAPickImageTool.h */,
 				A0C09D931FC51C9C00B7B9BE /* IFCAPickImageTool.m */,
 				A01E6C7F1FF231360078F1AB /* RACustomCameraController.h */,
@@ -258,6 +266,7 @@
 			files = (
 				A01E6C8A1FF234E80078F1AB /* round.png in Resources */,
 				A0C09D821FC45A6000B7B9BE /* LaunchScreen.storyboard in Resources */,
+				A01E6C971FF3873F0078F1AB /* testCollectionViewCell.xib in Resources */,
 				A0C09DA01FC57F1C00B7B9BE /* PhotoCollectionViewCell.xib in Resources */,
 				A01E6C8B1FF234E80078F1AB /* flashlight_off.png in Resources */,
 				A0C09D7F1FC45A6000B7B9BE /* Assets.xcassets in Resources */,
@@ -289,6 +298,7 @@
 				A063388E1FCD5D2400AF8BD6 /* ColorView.m in Sources */,
 				A01E6C811FF231370078F1AB /* RACustomCameraController.m in Sources */,
 				A072D79E1FC665D2008E7A4A /* PHCachingImageManager+shareManager.m in Sources */,
+				A01E6C961FF3873F0078F1AB /* testCollectionViewCell.m in Sources */,
 				A0C09D981FC57E4E00B7B9BE /* AlbumViewController.m in Sources */,
 				A0C09D941FC51C9C00B7B9BE /* IFCAPickImageTool.m in Sources */,
 				A0C09D851FC45A6000B7B9BE /* main.m in Sources */,

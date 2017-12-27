@@ -63,7 +63,8 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.view.backgroundColor = [UIColor blackColor];
-    
+    NSLog(@"camera = %p",self);
+
     self.effectiveScale = self.beginGestureScale = 1.0f;
     [self.view addSubview:self.flashButton];
     [self.view addSubview:self.cancelButton];

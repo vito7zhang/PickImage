@@ -100,6 +100,7 @@
                 self.font = [UIFont systemFontOfSize:24.0];
             }
         };
+        NSLog(@"self.getCurrentVC = %p,",self.getCurrentVC);
         [self.getCurrentVC.view addSubview:editTextVC.view];
         [self.getCurrentVC addChildViewController:editTextVC];
     }else{
