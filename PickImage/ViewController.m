@@ -52,7 +52,7 @@
 -(void)showActionSheetButtonAction:(UIButton *)sender{
     IFCAPickImageTool *tool = [IFCAPickImageTool new];
     tool.delegate = self;
-//    tool.imageEdit = NO;
+//    tool.maxCount = 2;
     [tool showInViewController:self];
 }
 -(void)selectedImageWithResult:(NSArray<PHAsset *> *)result{

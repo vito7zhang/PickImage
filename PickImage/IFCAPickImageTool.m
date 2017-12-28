@@ -42,9 +42,6 @@ static IFCAPickImageTool *_tool = nil;
 -(void)defaultConfiguration{
     _tool.imageEdit = YES;
     _tool.maxCount = 9;
-    NSDateFormatter *formatter = [NSDateFormatter new];
-    [formatter setDateFormat:@"yyyy-MM-dd"];
-    _tool.waterMarkText = [formatter stringFromDate:[NSDate date]];
 }
 -(void)showInViewController:(UIViewController *)showVC{
     _showVC = showVC;
