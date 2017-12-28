@@ -116,7 +116,6 @@
 
 #pragma mark 按钮绑定事件
 -(void)cancelButtonAction:(UIButton *)sender{
-    [self.navigationController popViewControllerAnimated:YES];
     UIViewController *vc = [self.navigationController popViewControllerAnimated:YES];
     if (vc == nil) {
         [self dismissViewControllerAnimated:YES completion:nil];
@@ -124,10 +123,6 @@
 }
 -(void)finishButtonAction:(UIButton *)sender{
     self.backImage(self.editedImage);
-    UIViewController *vc = [self.navigationController popViewControllerAnimated:YES];
-//    if (vc == nil) {
-//        [self dismissViewControllerAnimated:YES completion:nil];
-//    }
 }
 -(void)penButtonAction:(UIButton *)sender{
     onePan.enabled = NO;
@@ -395,6 +390,9 @@
 }
 -(UIImage *)editedImage{
     if (_editedImage == nil) {
+        for (UIView *view in self.view.subviews) {
+            view.layer.borderWidth = 0;
+        }
         CGFloat imageScale = self.editImage.size.width/self.backgroundImageView.width;
         UIGraphicsBeginImageContextWithOptions(self.backgroundImageView.frame.size, 1, imageScale);
         [self.backgroundImageView.layer renderInContext:UIGraphicsGetCurrentContext()];
@@ -402,5 +400,9 @@
         UIGraphicsEndImageContext();
     }
     return _editedImage;
+}
+
+- (BOOL)shouldAutorotate{
+    return NO;
 }
 @end

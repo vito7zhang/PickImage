@@ -364,5 +364,9 @@
     return newAsset;
 }
 
+- (BOOL)shouldAutorotate{
+    return NO;
+}
+
 @end
 

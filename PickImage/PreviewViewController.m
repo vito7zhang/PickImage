@@ -384,4 +384,8 @@
     self.dataSource[self.page] = newAsset;
 }
 
+- (BOOL)shouldAutorotate{
+    return NO;
+}
+
 @end

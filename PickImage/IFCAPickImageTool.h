@@ -20,14 +20,12 @@
 @property (nonatomic,assign) NSUInteger maxCount;
 // 是否允许编辑
 @property (nonatomic, assign) BOOL imageEdit;
-// 是否有水印
-@property (nonatomic, assign) BOOL waterMark;
 // 自定义水印文字
 @property (nonatomic, copy) NSString *waterMarkText;
 
 @property (nonatomic,weak) id <PickImageDelegate>delegate;
 
--(void)showInViewController:(UIViewController *)vc;
+-(void)showInViewController:(UIViewController *)showVC;
 
 
 @end

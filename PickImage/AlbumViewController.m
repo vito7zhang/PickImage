@@ -229,4 +229,7 @@
     self.navigationController.toolbarHidden = YES;
 }
 
+- (BOOL)shouldAutorotate{
+    return NO;
+}
 @end

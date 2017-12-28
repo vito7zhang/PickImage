@@ -13,7 +13,7 @@
 
 @interface IFCAPickImageTool ()
 @property (nonatomic,strong)UIAlertController *alertController;
-@property (nonatomic,weak)UIViewController *vc;
+@property (nonatomic,weak)UIViewController *showVC;
 @end
 
 static IFCAPickImageTool *_tool = nil;
@@ -42,14 +42,13 @@ static IFCAPickImageTool *_tool = nil;
 -(void)defaultConfiguration{
     _tool.imageEdit = YES;
     _tool.maxCount = 9;
-    _tool.waterMark = YES;
     NSDateFormatter *formatter = [NSDateFormatter new];
     [formatter setDateFormat:@"yyyy-MM-dd"];
     _tool.waterMarkText = [formatter stringFromDate:[NSDate date]];
 }
--(void)showInViewController:(UIViewController *)vc{
-    _vc = vc;
-    [vc presentViewController:self.alertController animated:YES completion:nil];
+-(void)showInViewController:(UIViewController *)showVC{
+    _showVC = showVC;
+    [showVC presentViewController:self.alertController animated:YES completion:nil];
 }
 
 -(UIAlertController *)alertController{
@@ -57,29 +56,43 @@ static IFCAPickImageTool *_tool = nil;
         _alertController = [UIAlertController alertControllerWithTitle:@"提醒" message:@"请选择照片位置" preferredStyle:UIAlertControllerStyleActionSheet];
         UIAlertAction *cameraAction = [UIAlertAction actionWithTitle:@"相机" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
             RACustomCameraController *cVC = [RACustomCameraController new];
-            [_vc presentViewController:cVC animated:YES completion:nil];
+            [_showVC presentViewController:cVC animated:YES completion:nil];
         }];
         UIAlertAction *albumAction = [UIAlertAction actionWithTitle:@"相册" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+            // 没权限就请求权限
             if ([PHPhotoLibrary authorizationStatus] == PHAuthorizationStatusNotDetermined) {
+                // 请求权限
                 [PHPhotoLibrary requestAuthorization:^(PHAuthorizationStatus status) {
                     dispatch_async(dispatch_get_main_queue(), ^{
                         if (status == PHAuthorizationStatusAuthorized) {
+                            // 成功则跳转
                             AlbumViewController *albumVC = [AlbumViewController new];
-                            albumVC.maxCount = 9;
-    //                        albumVC.delegate = self;
-                            [_vc.navigationController pushViewController:albumVC animated:YES];
+                            albumVC.maxCount = _maxCount?_maxCount:9;
+                            if (_showVC.navigationController == nil) {
+                                UINavigationController *nav = [[UINavigationController alloc] initWithRootViewController:albumVC];
+                                [_showVC presentViewController:nav animated:YES completion:nil];
+                            }else{
+                                [_showVC.navigationController pushViewController:albumVC animated:YES];
+                            }
                         }else if ([PHPhotoLibrary authorizationStatus] != PHAuthorizationStatusAuthorized){
+                            // 拒绝则警告
                             [self showAlertToOpenauthorizationStatus];
                         }
                     });
                 }];
             }else if ([PHPhotoLibrary authorizationStatus] != PHAuthorizationStatusAuthorized){
+                // 拒绝授权则警告
                 [self showAlertToOpenauthorizationStatus];
             }else if ([PHPhotoLibrary authorizationStatus] == PHAuthorizationStatusAuthorized){
+                // 已授权则跳转
                 AlbumViewController *albumVC = [AlbumViewController new];
-                albumVC.maxCount = 9;
-//                albumVC.delegate = self;
-                [_vc.navigationController pushViewController:albumVC animated:YES];
+                albumVC.maxCount = _maxCount?_maxCount:9;
+                if (_showVC.navigationController == nil) {
+                    UINavigationController *nav = [[UINavigationController alloc] initWithRootViewController:albumVC];
+                    [_showVC presentViewController:nav animated:YES completion:nil];
+                }else{
+                    [_showVC.navigationController pushViewController:albumVC animated:YES];
+                }
             }
         }];
         UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:@"取消" style:UIAlertActionStyleCancel handler:nil];
@@ -95,7 +108,7 @@ static IFCAPickImageTool *_tool = nil;
     UIAlertController *controller = [UIAlertController alertControllerWithTitle:@"提醒" message:@"请在iPhone的'设置-隐私-照片'选项中,允许访问你的相册" preferredStyle:UIAlertControllerStyleAlert];
     UIAlertAction *cancel = [UIAlertAction actionWithTitle:@"取消" style:UIAlertActionStyleDefault handler:nil];
     [controller addAction:cancel];
-    [_vc presentViewController:controller animated:YES completion:nil];
+    [_showVC presentViewController:controller animated:YES completion:nil];
     return ;
 
 }
